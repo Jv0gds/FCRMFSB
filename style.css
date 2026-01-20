@@ -61,11 +61,9 @@ ul {
     justify-content: space-between;
     padding: 0 20px;
     border-bottom: 1px solid #444;
-    
-    /* --- 添加这两行 --- */
-    position: relative; /* 必须设置定位，z-index 才会生效 */
-    z-index: 1000;      /* 设置一个很高的数值，确保它永远在最上面 */
-    /* ---------------- */
+    position: sticky; /* 改为sticky实现吸顶 */
+    top: 0;           /* 定位到顶部 */
+    z-index: 1000;    /* 确保它永远在最上面 */
 }
 
 .navbar-left, .navbar-right {
@@ -180,6 +178,11 @@ ul {
 }
 
 .nav-button:hover {
+    background-color: var(--text-color-light);
+    color: var(--header-bg);
+}
+
+.nav-button.active {
     background-color: var(--text-color-light);
     color: var(--header-bg);
 }

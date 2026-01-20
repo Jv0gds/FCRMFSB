@@ -37,7 +37,7 @@
                 // 根据用户角色决定显示内容
                 if ($_SESSION["role"] === "registered") {
                     // 注册用户看到客户端仪表盘
-                    $allowed_pages = ['client_dashboard', 'lead_create_form', 'profile_edit', 'messages', 'conversation', 'send_message', 'start_conversation', 'company_profile', 'my_applications', 'support'];
+                    $allowed_pages = ['client_dashboard', 'lead_create_form', 'profile_edit', 'messages', 'conversation', 'send_message', 'start_conversation', 'company_profile', 'my_applications', 'support', 'edit_application', 'delete_application', 'edit_application_action'];
                     $page = $_GET['page'] ?? 'client_dashboard';
                      if (in_array($page, $allowed_pages) && file_exists("pages/{$page}.php")) {
                         include "pages/{$page}.php";

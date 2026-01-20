@@ -1,6 +1,6 @@
 <?php
 // pages/my_applications.php
-include '../db.php';
+include 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
@@ -33,8 +33,8 @@ $applications = $stmt->fetchAll();
             </div>
         <?php else: ?>
             <?php foreach ($applications as $app): ?>
-                <a href="public_detail_view.php?id=<?= $app['id'] ?>" class="lead-card-link">
-                    <div class="lead-card">
+                <div class="lead-card">
+                    <a href="public_detail_view.php?id=<?= $app['id'] ?>" class="lead-card-link">
                         <h2 class="lead-title"><?= htmlspecialchars($app['title'] ?? '') ?></h2>
                         <p class="lead-description-snippet">
                             <?php
@@ -50,8 +50,12 @@ $applications = $stmt->fetchAll();
                             <span class="status-badge status-badge--new"><?= htmlspecialchars($app['status'] ?? '') ?></span>
                             <span class="lead-post-time">发布于: <?= date('Y-m-d', strtotime($app['created_at'])) ?></span>
                         </div>
+                    </a>
+                    <div class="lead-actions">
+                        <a href="?page=edit_application&id=<?= $app['id'] ?>" class="btn btn-secondary btn-sm">编辑</a>
+                        <a href="?page=delete_application&id=<?= $app['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('您确定要删除此项目吗？');">删除</a>
                     </div>
-                </a>
+                </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>

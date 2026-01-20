@@ -3,9 +3,27 @@ include 'db.php';
 
 $search = $_GET['search'] ?? '';
 
+// 设置分页参数
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 10;
+$offset = ($page - 1) * $perPage;
+
+// 获取总记录数
+$countStmt = $pdo->prepare('SELECT COUNT(*) FROM leads WHERE title LIKE :search1 OR company_name LIKE :search2 OR description LIKE :search3');
+$search_param = "%$search%";
+$countStmt->execute([':search1' => $search_param, ':search2' => $search_param, ':search3' => $search_param]);
+$totalLeads = $countStmt->fetchColumn();
+$totalPages = ceil($totalLeads / $perPage);
+
 // Fetch description and created_at as well.
-$stmt = $pdo->prepare('SELECT id, first_name, last_name, company_name, title, description, source, status, created_at FROM leads WHERE title LIKE ? OR company_name LIKE ? OR description LIKE ? ORDER BY created_at DESC');
-$stmt->execute(["%$search%", "%$search%", "%$search%"]);
+$stmt = $pdo->prepare('SELECT id, first_name, last_name, company_name, title, description, source, status, created_at FROM leads WHERE title LIKE :search1 OR company_name LIKE :search2 OR description LIKE :search3 ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
+$stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$search_param = "%$search%";
+$stmt->bindValue(':search1', $search_param);
+$stmt->bindValue(':search2', $search_param);
+$stmt->bindValue(':search3', $search_param);
+$stmt->execute();
 $leads = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -58,6 +76,14 @@ $leads = $stmt->fetchAll();
                         </div>
                     </a>
                 <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">上一页</a>
+            <?php endif; ?>
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">下一页</a>
             <?php endif; ?>
         </div>
         <div class="back-link-container">

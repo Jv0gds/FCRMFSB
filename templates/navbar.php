@@ -1,4 +1,8 @@
-<?php // templates/navbar.php ?>
+<?php
+    // templates/navbar.php
+    $current_script = basename($_SERVER['SCRIPT_NAME']);
+    $current_page_param = $_GET['page'] ?? '';
+?>
 <header class="top-navbar">
     <div class="navbar-left">
         <a href="/" style="text-decoration: none; color: inherit;"><span class="logo">SCRM</span></a>
@@ -13,16 +17,17 @@
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'registered'): ?>
                 
                 <?php // Customer Portal Navigation ?>
-                <a href="index.php?page=client_dashboard" class="nav-button">项目概览</a>
-                <a href="index.php?page=my_applications" class="nav-button">我的申请</a>
-                <a href="index.php?page=messages" class="nav-button">信箱</a>
-                <a href="public_list_view.php" class="nav-button">公开目录</a>
-                <a href="index.php?page=support" class="nav-button">联系客服</a>
+                <a href="index.php?page=client_dashboard" class="nav-button <?php echo ($current_script == 'index.php' && ($current_page_param == 'client_dashboard' || $current_page_param == '')) ? 'active' : ''; ?>">项目概覽</a>
+                <a href="index.php?page=my_applications" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'my_applications') ? 'active' : ''; ?>">我的申请</a>
+                <a href="pages/notifications.php" class="nav-button <?php echo ($current_script == 'notifications.php') ? 'active' : ''; ?>">通知</a>
+                <a href="index.php?page=messages" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'messages') ? 'active' : ''; ?>">信箱</a>
+                <a href="public_list_view.php" class="nav-button <?php echo ($current_script == 'public_list_view.php') ? 'active' : ''; ?>">公开目录</a>
+                <a href="index.php?page=support" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'support') ? 'active' : ''; ?>">联系客服</a>
 
             <?php else: ?>
 
                 <?php // Internal User Navigation ?>
-                <a href="?page=notifications" class="nav-icon" title="通知中心">🔔</a>
+                <a href="pages/notifications.php" class="nav-icon" title="通知中心">🔔</a>
                 <a href="index.php?page=messages" class="nav-icon" title="信箱">✉️</a>
                 <a href="public_list_view.php" class="nav-icon" title="公开目录">📂</a>
                 

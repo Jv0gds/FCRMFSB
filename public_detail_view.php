@@ -34,6 +34,45 @@ $comments = $stmt_comments->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>线索详情</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container public-detail-container">
@@ -85,9 +124,9 @@ $comments = $stmt_comments->fetchAll();
                         <?php if (isset($lead['owner_id']) && $_SESSION['user_id'] != $lead['owner_id']): ?>
                             <a href="index.php?page=start_conversation&lead_id=<?= $lead['id'] ?>&receiver_id=<?= $lead['owner_id'] ?>" class="btn btn-primary btn-block">发送私信</a>
                         <?php endif; ?>
-                        <button class="btn btn-primary btn-block">请求访问</button>
+                        <button id="cooperation-btn" class="btn btn-primary btn-block">请求合作</button>
                     <?php else: ?>
-                        <a href="login.html" class="btn btn-primary btn-block">登录以请求访问</a>
+                        <a href="login.html" class="btn btn-primary btn-block">登录以请求合作</a>
                     <?php endif; ?>
                     <a href="mailto:report@example.com?subject=内容举报：线索 ID <?= $lead['id'] ?>" class="btn btn-secondary btn-block">举报内容</a>
                 </div>
@@ -111,5 +150,47 @@ $comments = $stmt_comments->fetchAll();
             <a href="public_list_view.php" class="btn btn-secondary">返回列表</a>
         </div>
     </div>
+
+    <!-- 合作请求弹窗 -->
+    <div id="cooperation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>请求合作</h2>
+            <form id="cooperation-form" action="pages/request_cooperation_action.php" method="post">
+                <input type="hidden" name="lead_id" value="<?= $lead['id'] ?>">
+                <input type="hidden" name="owner_id" value="<?= $lead['owner_id'] ?>">
+                <textarea name="reason" placeholder="请填写您的合作理由..." required></textarea>
+                <button type="submit" class="btn btn-primary">发送请求</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 获取弹窗
+        var modal = document.getElementById("cooperation-modal");
+
+        // 获取打开弹窗的按钮
+        var btn = document.getElementById("cooperation-btn");
+
+        // 获取 <span> 元素，用于关闭弹窗
+        var span = document.getElementsByClassName("close-button")[0];
+
+        // 点击按钮打开弹窗
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // 点击 <span> (x) 关闭弹窗
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // 点击窗口外部关闭弹窗
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
