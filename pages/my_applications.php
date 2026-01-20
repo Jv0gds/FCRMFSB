@@ -1,9 +1,10 @@
 <?php
+
 // pages/my_applications.php
 include 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.html');
+    header('Location: login.php');
     exit();
 }
 
@@ -22,14 +23,14 @@ $applications = $stmt->fetchAll();
 
 <div class="container public-list-container">
     <header class="list-header">
-        <h1>我的申请</h1>
-        <p>在这里查看您提交的所有项目申请及其状态。</p>
+        <h1><?php echo t("my_applications_title"); ?></h1>
+        <p><?php echo t("view_all_applications_status"); ?></p>
     </header>
 
     <div class="lead-list">
         <?php if (empty($applications)): ?>
             <div class="lead-card">
-                <p>您还没有提交任何项目。</p>
+                <p><?php echo t("no_projects_submitted"); ?></p>
             </div>
         <?php else: ?>
             <?php foreach ($applications as $app): ?>
@@ -48,12 +49,12 @@ $applications = $stmt->fetchAll();
                         </p>
                         <div class="lead-meta">
                             <span class="status-badge status-badge--new"><?= htmlspecialchars($app['status'] ?? '') ?></span>
-                            <span class="lead-post-time">发布于: <?= date('Y-m-d', strtotime($app['created_at'])) ?></span>
+                            <span class="lead-post-time"><?php echo t("posted_on"); ?>: <?= date('Y-m-d', strtotime($app['created_at'])) ?></span>
                         </div>
                     </a>
                     <div class="lead-actions">
-                        <a href="?page=edit_application&id=<?= $app['id'] ?>" class="btn btn-secondary btn-sm">编辑</a>
-                        <a href="?page=delete_application&id=<?= $app['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('您确定要删除此项目吗？');">删除</a>
+                        <a href="?page=edit_application&id=<?= $app['id'] ?>" class="btn btn-secondary btn-sm"><?php echo t("edit"); ?></a>
+                        <a href="?page=delete_application&id=<?= $app['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('<?php echo t("confirm_delete_project"); ?>');"><?php echo t("delete"); ?></a>
                     </div>
                 </div>
             <?php endforeach; ?>

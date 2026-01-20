@@ -3,7 +3,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include '../db.php';
-include '../templates/navbar.php'; 
+include '../i18n.php';
+include '../templates/navbar.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login.html');

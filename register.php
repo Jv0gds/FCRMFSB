@@ -1,46 +1,73 @@
+<?php
+session_start();
+
+// Language switching logic
+$available_langs = ['en', 'fr', 'zh-CN'];
+$default_lang = 'zh-CN';
+
+if (isset($_GET['lang']) && in_array($_GET['lang'], $available_langs)) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$lang = $_SESSION['lang'] ?? $default_lang;
+
+$lang_file = "languages/{$lang}.php";
+if (file_exists($lang_file)) {
+    include_once $lang_file;
+} else {
+    // Fallback to default language if file not found
+    include_once "languages/{$default_lang}.php";
+}
+
+// Function to get translation
+function t($key) {
+    global $translations;
+    return $translations[$key] ?? $key;
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title><?php echo t('register_title'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="mt-5">Register</h2>
+                <h2 class="mt-5"><?php echo t('register_title'); ?></h2>
                 <form action="register_action.php" method="POST" id="registerForm">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label"><?php echo t('username'); ?></label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="mb-3">
-                       <label for="first_name" class="form-label">真实姓氏</label>
+                       <label for="first_name" class="form-label"><?php echo t('real_surname'); ?></label>
                        <input type="text" class="form-control" id="first_name" name="first_name" required>
                    </div>
                    <div class="mb-3">
-                       <label for="last_name" class="form-label">真实名字</label>
+                       <label for="last_name" class="form-label"><?php echo t('real_name'); ?></label>
                        <input type="text" class="form-control" id="last_name" name="last_name" required>
                    </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
+                        <label for="email" class="form-label"><?php echo t('email_address'); ?></label>
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required title="密码需要至少包含大写，小写及特殊符号">
-                        <div id="passwordHelp" class="form-text">密码需要至少包含大写，小写及特殊符号</div>
+                        <label for="password" class="form-label"><?php echo t('password'); ?></label>
+                        <input type="password" class="form-control" id="password" name="password" required title="<?php echo t('password_help'); ?>">
+                        <div id="passwordHelp" class="form-text"><?php echo t('password_help'); ?></div>
                     </div>
                     <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <label for="confirm_password" class="form-label"><?php echo t('confirm_password'); ?></label>
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                     </div>
                     <div id="passwordError" class="alert alert-danger" style="display: none;"></div>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="submit" class="btn btn-primary"><?php echo t('register_button'); ?></button>
                 </form>
-                <p class="mt-3">Already have an account? <a href="login.html">Login here</a>.</p>
+                <p class="mt-3"><?php echo t('already_have_account'); ?> <a href="login.php"><?php echo t('login_here'); ?></a>.</p>
             </div>
         </div>
     </div>
@@ -69,7 +96,7 @@
             let errors = [];
 
             if (!complexityRegex.test(passwordValue)) {
-                errors.push('密码需要至少包含大写、小写字母及一个特殊符号。');
+                errors.push('<?php echo t('password_complexity_error'); ?>');
                 password.classList.add('is-invalid');
                 passwordHelp.style.color = 'red';
             } else {
@@ -77,7 +104,7 @@
             }
 
             if (passwordValue !== confirmPasswordValue && confirmPasswordValue !== '') {
-                errors.push('两次输入的密码不匹配。');
+                errors.push('<?php echo t('password_mismatch_error'); ?>');
                 confirmPassword.classList.add('is-invalid');
             }
             

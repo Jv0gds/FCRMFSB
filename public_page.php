@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>欢迎来到 SCRMFSB</title>
+    <title><?php echo t('welcome_to_scrmfsb'); ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>欢迎来到 SCRMFSB - 客户关系管理系统</h1>
-            <p>我们提供强大的工具来帮助您管理客户、销售和业务活动。</p>
+            <h1><?php echo t('welcome_header'); ?></h1>
+            <p><?php echo t('welcome_subheader'); ?></p>
         </header>
 
         <section class="features">
-            <h2>系统功能</h2>
+            <h2><?php echo t('system_features'); ?></h2>
             <ul>
-                <li>潜在客户和联系人管理</li>
-                <li>销售商机跟踪</li>
-                <li>活动和任务安排</li>
-                <li>详细的报告和分析</li>
+                <li><?php echo t('feature_leads_contacts'); ?></li>
+                <li><?php echo t('feature_sales_tracking'); ?></li>
+                <li><?php echo t('feature_activity_scheduling'); ?></li>
+                <li><?php echo t('feature_reporting'); ?></li>
             </ul>
         </section>
 
         <section class="call-to-action">
-            <h2>开始使用</h2>
-            <p>请登录或注册以访问系统的全部功能。</p>
-            <a href="login.html" class="button">登录</a>
-            <a href="register.html" class="button">注册</a>
-            <a href="public_list_view.php" class="button">浏览公开目录</a>
+            <h2><?php echo t('get_started'); ?></h2>
+            <p><?php echo t('login_or_register_prompt'); ?></p>
+            <a href="login.php" class="button"><?php echo t('login'); ?></a>
+            <a href="register.php" class="button"><?php echo t('register'); ?></a>
+            <a href="public_list_view.php" class="button"><?php echo t('browse_public_directory'); ?></a>
         </section>
 
         <footer>
-            <p>&copy; 2023 SCRMFSB. 保留所有权利。</p>
+            <p><?php echo t('copyright_notice'); ?></p>
         </footer>
     </div>
 </body>

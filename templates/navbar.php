@@ -7,36 +7,41 @@
     <div class="navbar-left">
         <a href="/" style="text-decoration: none; color: inherit;"><span class="logo">SCRM</span></a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] != 'registered'): ?>
-        <input type="text" placeholder="全局搜索..." class="global-search">
+        <input type="text" placeholder="<?php echo t('global_search'); ?>" class="global-search">
         <?php endif; ?>
     </div>
     <div class="navbar-right">
+        <div class="language-switcher">
+            <a href="?lang=en" class="nav-button">EN</a>
+            <a href="?lang=fr" class="nav-button">FR</a>
+            <a href="?lang=zh-CN" class="nav-button">CN</a>
+        </div>
         <?php if (isset($_SESSION['user_id'])): ?>
             
             <?php // Role-based navigation switching ?>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'registered'): ?>
                 
                 <?php // Customer Portal Navigation ?>
-                <a href="index.php?page=client_dashboard" class="nav-button <?php echo ($current_script == 'index.php' && ($current_page_param == 'client_dashboard' || $current_page_param == '')) ? 'active' : ''; ?>">项目概覽</a>
-                <a href="index.php?page=my_applications" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'my_applications') ? 'active' : ''; ?>">我的申请</a>
-                <a href="pages/notifications.php" class="nav-button <?php echo ($current_script == 'notifications.php') ? 'active' : ''; ?>">通知</a>
-                <a href="index.php?page=messages" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'messages') ? 'active' : ''; ?>">信箱</a>
-                <a href="public_list_view.php" class="nav-button <?php echo ($current_script == 'public_list_view.php') ? 'active' : ''; ?>">公开目录</a>
-                <a href="pages/contact_admin.php?recipient_id=1&subject=联系客服" class="nav-button <?php echo ($current_script == 'contact_admin.php') ? 'active' : ''; ?>">联系客服</a>
+                <a href="index.php?page=client_dashboard" class="nav-button <?php echo ($current_script == 'index.php' && ($current_page_param == 'client_dashboard' || $current_page_param == '')) ? 'active' : ''; ?>"><?php echo t('projects_overview'); ?></a>
+                <a href="index.php?page=my_applications" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'my_applications') ? 'active' : ''; ?>"><?php echo t('my_applications'); ?></a>
+                <a href="pages/notifications.php" class="nav-button <?php echo ($current_script == 'notifications.php') ? 'active' : ''; ?>"><?php echo t('notifications'); ?></a>
+                <a href="index.php?page=messages" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'messages') ? 'active' : ''; ?>"><?php echo t('messages'); ?></a>
+                <a href="public_list_view.php" class="nav-button <?php echo ($current_script == 'public_list_view.php') ? 'active' : ''; ?>"><?php echo t('public_directory'); ?></a>
+                <a href="pages/contact_admin.php?recipient_id=1&subject=联系客服" class="nav-button <?php echo ($current_script == 'contact_admin.php') ? 'active' : ''; ?>"><?php echo t('contact_support'); ?></a>
 
             <?php else: ?>
 
                 <?php // Internal User Navigation ?>
-                <a href="pages/notifications.php" class="nav-icon" title="通知中心">🔔</a>
-                <a href="index.php?page=messages" class="nav-icon" title="信箱">✉️</a>
-                <a href="public_list_view.php" class="nav-icon" title="公开目录">📂</a>
+                <a href="pages/notifications.php" class="nav-icon" title="<?php echo t('notifications'); ?>">🔔</a>
+                <a href="index.php?page=messages" class="nav-icon" title="<?php echo t('messages'); ?>">✉️</a>
+                <a href="public_list_view.php" class="nav-icon" title="<?php echo t('public_directory'); ?>">📂</a>
                 
                 <div class="dropdown">
                     <button class="nav-icon create-btn">+</button>
                     <div class="dropdown-content">
-                        <a href="?page=lead_create">新建潜在客户</a>
-                        <a href="?page=contact_create">新建联系人</a>
-                        <a href="?page=company_create">新建公司</a>
+                        <a href="?page=lead_create"><?php echo t('new_lead'); ?></a>
+                        <a href="?page=contact_create"><?php echo t('new_contact'); ?></a>
+                        <a href="?page=company_create"><?php echo t('new_company'); ?></a>
                     </div>
                 </div>
             <?php endif; ?>
@@ -48,17 +53,17 @@
                     <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 </div>
                 <div class="dropdown-content">
-                    <a href="index.php?page=profile_edit">个人资料</a>
-                    <a href="index.php?page=company_profile">公司信息</a>
-                    <a href="logout.php">登出</a>
+                    <a href="index.php?page=profile_edit"><?php echo t('personal_profile'); ?></a>
+                    <a href="index.php?page=company_profile"><?php echo t('company_information'); ?></a>
+                    <a href="logout.php"><?php echo t('logout'); ?></a>
                 </div>
             </div>
 
         <?php else: ?>
 
             <?php // Not logged in ?>
-            <a href="login.html" class="nav-button">登录</a>
-            <a href="register.html" class="nav-button">注册</a>
+            <a href="login.php" class="nav-button"><?php echo t('login'); ?></a>
+            <a href="register.php" class="nav-button"><?php echo t('register'); ?></a>
 
         <?php endif; ?>
     </div>

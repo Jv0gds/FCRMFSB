@@ -35,7 +35,7 @@ $stmt_all->execute([$user_id]);
 $all_leads = $stmt_all->fetchAll();
 
 // --- Business Logic for Stepper ---
-$stages = ['提交申请', '分配顾问', '需求沟通', '方案制定', '签约'];
+$stages = [t('step_submit_application'), t('step_assign_consultant'), t('step_needs_communication'), t('step_solution_formulation'), t('step_contract_signing')];
 $current_stage_index = -1; // -1 means no project yet
 
 if ($latest_lead) {
@@ -114,9 +114,9 @@ if ($latest_lead) {
 
         <!-- Block A: Welcome Banner -->
         <div class="card welcome-banner grid-col-span-2">
-            <h2>下午好, <?= htmlspecialchars($username) ?>!</h2>
+            <h2><?php echo t('good_afternoon'); ?>, <?= htmlspecialchars($username) ?>!</h2>
             <?php if ($latest_lead): ?>
-                <p>您的项目 “<?= htmlspecialchars($latest_lead['company_name']) ?>” 正在处理中。</p>
+                <p><?php echo sprintf(t('your_project_is_in_progress'), htmlspecialchars($latest_lead['company_name'])); ?></p>
                 <div class="stepper">
                     <?php foreach ($stages as $index => $label): ?>
                         <?php
@@ -131,55 +131,55 @@ if ($latest_lead) {
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <p>欢迎使用客户门户！您可以通过下方的快捷操作发起您的第一个项目申请。</p>
+                <p><?php echo t('welcome_to_portal'); ?></p>
             <?php endif; ?>
         </div>
 
         <!-- Block B: Your Representative -->
         <div class="card rep-card">
-            <h3 class="card-title">您的专属顾问</h3>
+            <h3 class="card-title"><?php echo t('your_dedicated_consultant'); ?></h3>
             <?php if ($representative): ?>
                 <div class="rep-header">
                     <img src="<?= htmlspecialchars($representative['avatar_url'] ?? 'https://via.placeholder.com/64') ?>" alt="Rep Avatar" class="rep-avatar">
                     <div class="rep-info">
                         <h4><?= htmlspecialchars($representative['full_name']) ?></h4>
-                        <p>客户成功经理</p>
+                        <p><?php echo t('customer_success_manager'); ?></p>
                     </div>
                 </div>
-                <p>电话: <?= htmlspecialchars($representative['phone'] ?? '未提供') ?></p>
-                <a href="mailto:<?= htmlspecialchars($representative['email']) ?>" class="btn btn--primary">发送邮件</a>
+                <p><?php echo t('phone'); ?>: <?= htmlspecialchars($representative['phone'] ?? t('not_provided')) ?></p>
+                <a href="mailto:<?= htmlspecialchars($representative['email']) ?>" class="btn btn--primary"><?php echo t('send_email'); ?></a>
             <?php else: ?>
-                <p>正在为您匹配最合适的顾问...</p>
-                <p>分配成功后，顾问的联系方式将显示在此处，请耐心等待。</p>
+                <p><?php echo t('matching_consultant'); ?></p>
+                <p><?php echo t('consultant_contact_info_will_appear'); ?></p>
             <?php endif; ?>
         </div>
 
         <!-- Block C: Quick Actions -->
         <div class="card">
-            <h3 class="card-title">快捷操作</h3>
+            <h3 class="card-title"><?php echo t('quick_actions'); ?></h3>
             <div class="quick-actions-grid">
                 <a href="index.php?page=lead_create_form" class="action-card">
                     <div class="icon">+</div>
-                    <div class="text">创建新项目</div>
+                    <div class="text"><?php echo t('create_new_project'); ?></div>
                 </a>
                 <a href="index.php?page=profile_edit" class="action-card">
                     <div class="icon">👤</div>
-                    <div class="text">完善个人信息</div>
+                    <div class="text"><?php echo t('complete_personal_information'); ?></div>
                 </a>
             </div>
         </div>
 
         <!-- Block D: Recent Activity -->
         <div class="card grid-col-span-2 activity-log">
-             <h3 class="card-title">最近动态</h3>
+             <h3 class="card-title"><?php echo t('recent_activity'); ?></h3>
              <?php if (empty($all_leads)): ?>
-                <p>暂无动态。您提交的所有申请记录将在这里显示。</p>
+                <p><?php echo t('no_recent_activity'); ?></p>
              <?php else: ?>
                 <ul>
                     <?php foreach ($all_leads as $lead): ?>
                     <li>
-                        <span>您于 <?= date('Y年m月d日', strtotime($lead['created_at'])) ?> 提交了 “<strong><?= htmlspecialchars($lead['company_name']) ?></strong>” 申请。</span>
-                        <span class="date">当前状态: <?= htmlspecialchars($lead['status']) ?></span>
+                        <span><?php echo sprintf(t('you_submitted_application_on'), date('Y-m-d', strtotime($lead['created_at'])), htmlspecialchars($lead['company_name'])); ?></span>
+                        <span class="date"><?php echo t('current_status'); ?>: <?= htmlspecialchars($lead['status']) ?></span>
                     </li>
                     <?php endforeach; ?>
                 </ul>

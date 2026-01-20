@@ -1,9 +1,36 @@
+<?php
+session_start();
+
+// Language switching logic
+$available_langs = ['en', 'fr', 'zh-CN'];
+$default_lang = 'zh-CN';
+
+if (isset($_GET['lang']) && in_array($_GET['lang'], $available_langs)) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$lang = $_SESSION['lang'] ?? $default_lang;
+
+$lang_file = "languages/{$lang}.php";
+if (file_exists($lang_file)) {
+    include_once $lang_file;
+} else {
+    // Fallback to default language if file not found
+    include_once "languages/{$default_lang}.php";
+}
+
+// Function to get translation
+function t($key) {
+    global $translations;
+    return $translations[$key] ?? $key;
+}
+?>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - SCRMFSB</title>
+    <title><?php echo t('login_title'); ?> - SCRMFSB</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -131,7 +158,7 @@
 <body>
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="auth-title">登录您的账户</h1>
+            <h1 class="auth-title"><?php echo t('login_to_your_account'); ?></h1>
         </div>
         <form class="auth-form auth-form--login" action="login_action.php" method="POST">
             
@@ -142,32 +169,32 @@
             <?php endif; ?>
 
             <div class="form-group">
-                <label class="form-label" for="login-email">电子邮箱</label>
+                <label class="form-label" for="login-email"><?php echo t('email_address'); ?></label>
                 <input class="form-input" type="email" id="login-email" name="email" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="login-password">密码</label>
+                <label class="form-label" for="login-password"><?php echo t('password'); ?></label>
                 <input class="form-input" type="password" id="login-password" name="password" required>
             </div>
             
             <div class="form-actions">
-                <button class="btn btn--primary" type="submit" name="login_submit">进入系统</button>
+                <button class="btn btn--primary" type="submit" name="login_submit"><?php echo t('enter_system'); ?></button>
             </div>
 
             <div class="auth-divider">
-                <span>或者</span>
+                <span><?php echo t('or'); ?></span>
             </div>
 
             <div class="form-actions">
-                <a href="guest_login.php" class="btn btn--outline">以访客身份试用</a>
+                <a href="guest_login.php" class="btn btn--outline"><?php echo t('try_as_guest'); ?></a>
             </div>
 
             <div class="form-footer-link">
-                <a href="#" class="auth-link">忘记密码?</a>
+                <a href="#" class="auth-link"><?php echo t('forgot_password'); ?></a>
             </div>
         </form>
         <div class="register-link">
-            还没有账户? <a href="register.html" class="auth-link">立即注册</a>
+            <?php echo t('no_account_yet'); ?> <a href="register.php" class="auth-link"><?php echo t('register_now'); ?></a>
         </div>
     </div>
 </body>

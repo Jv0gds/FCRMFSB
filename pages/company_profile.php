@@ -24,35 +24,35 @@ if ($user && $user['company_id']) {
 
 <div class="container public-detail-container">
     <header class="detail-header">
-        <h1>公司信息</h1>
-        <p><?= $company ? '更新您的公司资料。' : '请填写您的公司信息。' ?></p>
+        <h1><?php echo t('company_information'); ?></h1>
+        <p><?= $company ? t('update_your_company_profile') : t('fill_in_your_company_information') ?></p>
     </header>
 
     <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">公司信息更新成功！</div>
+        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;"><?php echo t('company_information_updated_successfully'); ?></div>
     <?php endif; ?>
     
     <div class="main-content-detail">
         <form action="pages/company_profile_action.php" method="POST" class="comment-form" style="border-top: none; padding-top: 0;">
             <div class="form-group">
-                <label><strong>公司名称</strong></label>
+                <label><strong><?php echo t('company_name'); ?></strong></label>
                 <input type="text" name="name" value="<?= htmlspecialchars($company['name'] ?? '') ?>" class="search-input" style="border-radius: 8px;" required>
             </div>
             <div class="form-group" style="margin-top: 1rem;">
-                <label><strong>行业</strong></label>
+                <label><strong><?php echo t('industry'); ?></strong></label>
                 <input type="text" name="industry" value="<?= htmlspecialchars($company['industry'] ?? '') ?>" class="search-input" style="border-radius: 8px;">
             </div>
             <div class="form-group" style="margin-top: 1rem;">
-                <label><strong>公司电话</strong></label>
+                <label><strong><?php echo t('company_phone'); ?></strong></label>
                 <input type="text" name="phone" value="<?= htmlspecialchars($company['phone'] ?? '') ?>" class="search-input" style="border-radius: 8px;">
             </div>
             <div class="form-group" style="margin-top: 1rem;">
-                <label><strong>公司网站</strong></label>
+                <label><strong><?php echo t('company_website'); ?></strong></label>
                 <input type="text" name="website" value="<?= htmlspecialchars($company['website'] ?? '') ?>" class="search-input" style="border-radius: 8px;">
             </div>
             <div class="form-actions" style="margin-top: 2rem; text-align: right;">
-                <a href="?page=client_dashboard" class="btn btn-secondary">返回</a>
-                <button type="submit" class="btn btn-primary">保存</button>
+                <a href="?page=client_dashboard" class="btn btn-secondary"><?php echo t('back'); ?></a>
+                <button type="submit" class="btn btn-primary"><?php echo t('save'); ?></button>
             </div>
         </form>
     </div>

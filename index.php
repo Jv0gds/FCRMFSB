@@ -1,6 +1,10 @@
-<?php session_start(); ?>
+<?php
+session_start();
+
+include_once 'i18n.php';
+?>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,16 +19,16 @@
         <aside class="sidebar">
             <nav>
                 <ul>
-                    <li><a href="?page=dashboard">仪表盘</a></li>
-                    <li class="menu-header">客户管理</li>
-                    <li><a href="?page=leads_list">潜在客户</a></li>
-                    <li><a href="?page=contacts_list">联系人</a></li>
-                    <li><a href="?page=companies_list">公司</a></li>
-                    <li class="menu-header">销售流程</li>
-                    <li><a href="?page=deals_list">商机</a></li>
-                    <li><a href="?page=activities_list">活动</a></li>
-                    <li class="menu-header">管理面板</li>
-                    <li><a href="?page=admin_panel">系统设置</a></li>
+                    <li><a href="?page=dashboard"><?php echo t('dashboard'); ?></a></li>
+                    <li class="menu-header"><?php echo t('customer_management'); ?></li>
+                    <li><a href="?page=leads_list"><?php echo t('potential_customers'); ?></a></li>
+                    <li><a href="?page=contacts_list"><?php echo t('contacts'); ?></a></li>
+                    <li><a href="?page=companies_list"><?php echo t('companies'); ?></a></li>
+                    <li class="menu-header"><?php echo t('sales_process'); ?></li>
+                    <li><a href="?page=deals_list"><?php echo t('opportunities'); ?></a></li>
+                    <li><a href="?page=activities_list"><?php echo t('activities'); ?></a></li>
+                    <li class="menu-header"><?php echo t('management_panel'); ?></li>
+                    <li><a href="?page=admin_panel"><?php echo t('system_settings'); ?></a></li>
                 </ul>
             </nav>
         </aside>

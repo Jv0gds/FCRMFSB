@@ -1,4 +1,30 @@
 <?php
+session_start();
+
+// Language switching logic
+$available_langs = ['en', 'fr', 'zh-CN'];
+$default_lang = 'zh-CN';
+
+if (isset($_GET['lang']) && in_array($_GET['lang'], $available_langs)) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$lang = $_SESSION['lang'] ?? $default_lang;
+
+$lang_file = "languages/{$lang}.php";
+if (file_exists($lang_file)) {
+    include_once $lang_file;
+} else {
+    // Fallback to default language if file not found
+    include_once "languages/{$default_lang}.php";
+}
+
+// Function to get translation
+function t($key) {
+    global $translations;
+    return $translations[$key] ?? $key;
+}
+
 include 'db.php';
 
 $search = $_GET['search'] ?? '';
@@ -61,47 +87,47 @@ $stmt->execute();
 $leads = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公开线索列表</title>
+    <title><?php echo t('public_leads_list'); ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container public-list-container">
         <header class="list-header">
-            <h1>寻找新的机会</h1>
-            <p>浏览公开的业务线索，寻找下一个合作伙伴。</p>
+            <h1><?php echo t('find_new_opportunities'); ?></h1>
+            <p><?php echo t('browse_public_leads'); ?></p>
         </header>
 
         <div class="filter-bar">
             <form action="public_list_view.php" method="get" class="filter-form">
-                <input type="text" name="search" class="search-input" placeholder="搜索关键词..." value="<?= htmlspecialchars($search) ?>">
+                <input type="text" name="search" class="search-input" placeholder="<?php echo t('search_keywords'); ?>" value="<?= htmlspecialchars($search) ?>">
                 
                 <select name="status" class="filter-select">
-                    <option value="">所有状态</option>
-                    <option value="new" <?= ($status == 'new') ? 'selected' : '' ?>>新线索</option>
-                    <option value="contacted" <?= ($status == 'contacted') ? 'selected' : '' ?>>已联系</option>
-                    <option value="qualified" <?= ($status == 'qualified') ? 'selected' : '' ?>>已合格</option>
-                    <option value="lost" <?= ($status == 'lost') ? 'selected' : '' ?>>丢失</option>
+                    <option value=""><?php echo t('all_statuses'); ?></option>
+                    <option value="new" <?= ($status == 'new') ? 'selected' : '' ?>><?php echo t('status_new'); ?></option>
+                    <option value="contacted" <?= ($status == 'contacted') ? 'selected' : '' ?>><?php echo t('status_contacted'); ?></option>
+                    <option value="qualified" <?= ($status == 'qualified') ? 'selected' : '' ?>><?php echo t('status_qualified'); ?></option>
+                    <option value="lost" <?= ($status == 'lost') ? 'selected' : '' ?>><?php echo t('status_lost'); ?></option>
                 </select>
 
                 <select name="sort" class="filter-select">
-                    <option value="created_at_desc" <?= ($sort == 'created_at_desc') ? 'selected' : '' ?>>最新发布</option>
-                    <option value="created_at_asc" <?= ($sort == 'created_at_asc') ? 'selected' : '' ?>>最早发布</option>
-                    <option value="title_asc" <?= ($sort == 'title_asc') ? 'selected' : '' ?>>标题 (A-Z)</option>
-                    <option value="title_desc" <?= ($sort == 'title_desc') ? 'selected' : '' ?>>标题 (Z-A)</option>
+                    <option value="created_at_desc" <?= ($sort == 'created_at_desc') ? 'selected' : '' ?>><?php echo t('sort_newest'); ?></option>
+                    <option value="created_at_asc" <?= ($sort == 'created_at_asc') ? 'selected' : '' ?>><?php echo t('sort_oldest'); ?></option>
+                    <option value="title_asc" <?= ($sort == 'title_asc') ? 'selected' : '' ?>><?php echo t('sort_title_az'); ?></option>
+                    <option value="title_desc" <?= ($sort == 'title_desc') ? 'selected' : '' ?>><?php echo t('sort_title_za'); ?></option>
                 </select>
 
-                <button type="submit" class="btn">筛选</button>
+                <button type="submit" class="btn"><?php echo t('filter_button'); ?></button>
             </form>
         </div>
 
         <div class="lead-list">
             <?php if (empty($leads)): ?>
                 <div class="lead-card">
-                    <p>没有找到匹配的线索。</p>
+                    <p><?php echo t('no_matching_leads'); ?></p>
                 </div>
             <?php else: ?>
                 <?php foreach ($leads as $lead): ?>
@@ -122,8 +148,8 @@ $leads = $stmt->fetchAll();
                             </p>
                             <div class="lead-meta">
                                 <span class="status-badge status-badge--new"><?= htmlspecialchars($lead['status'] ?? '') ?></span>
-                                <span class="lead-source">来源: <?= htmlspecialchars($lead['source'] ?? '') ?></span>
-                                <span class="lead-post-time">发布于: <?= date('Y-m-d', strtotime($lead['created_at'])) ?></span>
+                                <span class="lead-source"><?php echo t('source'); ?>: <?= htmlspecialchars($lead['source'] ?? '') ?></span>
+                                <span class="lead-post-time"><?php echo t('posted_on'); ?>: <?= date('Y-m-d', strtotime($lead['created_at'])) ?></span>
                             </div>
                         </div>
                     </a>
@@ -132,14 +158,14 @@ $leads = $stmt->fetchAll();
         </div>
         <div class="pagination">
             <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn">上一页</a>
+                <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn"><?php echo t('previous_page'); ?></a>
             <?php endif; ?>
             <?php if ($page < $totalPages): ?>
-                <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn">下一页</a>
+                <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn"><?php echo t('next_page'); ?></a>
             <?php endif; ?>
         </div>
         <div class="back-link-container">
-            <a href="index.php" class="btn btn-secondary">返回首页</a>
+            <a href="index.php" class="btn btn-secondary"><?php echo t('back_to_home'); ?></a>
         </div>
     </div>
 </body>

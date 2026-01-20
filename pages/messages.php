@@ -2,11 +2,13 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+
 include 'db.php';
 // The navbar is included by index.php, so we don't need it here.
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.html');
+    header('Location: login.php');
     exit();
 }
 
@@ -58,7 +60,7 @@ if ($results) {
              $conversations[] = [
                 'conversation_id' => $conv_id,
                 'display_name' => $display_name,
-                'company_name' => $lead_data['company_name'] ?? 'General Conversation'
+                'company_name' => $lead_data['company_name'] ?? t('general_conversation')
             ];
         }
     }
@@ -76,13 +78,13 @@ if ($results) {
     </div>
     <div class="messages-view">
         <div class="messages-log">
-            <p>请在左侧选择一个对话。</p>
+            <p><?php echo t('select_a_conversation'); ?></p>
         </div>
         <div class="message-form">
             <form id="sendMessageForm">
                 <input type="hidden" id="conversationId" name="conversation_id">
-                <textarea name="message" placeholder="输入消息..." required></textarea>
-                <button type="submit" class="btn" disabled>发送</button>
+                <textarea name="message" placeholder="<?php echo t('enter_message_placeholder'); ?>" required></textarea>
+                <button type="submit" class="btn" disabled><?php echo t("send_button"); ?></button>
             </form>
         </div>
     </div>
