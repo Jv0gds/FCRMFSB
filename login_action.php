@@ -9,7 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
 
     // 简单验证
     if (empty($email) || empty($password)) {
-        header("Location: login.html?error=请填写所有字段");
+        // 修改 1: 英文提示 "Please fill in all fields"
+        header("Location: login.php?error=Please fill in all fields"); 
         exit();
     }
 
@@ -23,9 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
         // 登录成功，设置 Session
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role']; // 保存角色用于权限控制
+        $_SESSION['role'] = $user['role']; 
 
-        // 根据角色跳转到不同页面 (可选)
         if (isset($_SESSION['role']) && $_SESSION['role'] == 'registered') {
             header("Location: index.php?page=client_dashboard");
         } else {
@@ -33,12 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
         }
         exit();
     } else {
-        // 登录失败
-        header("Location: login.html?error=邮箱或密码错误");
+        // 修改 2: 英文提示 "Incorrect email or password"
+        // 注意：我把 login.html 改为了 login.php (见下文解释)
+        header("Location: login.php?error=Incorrect email or password"); 
         exit();
     }
 } else {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 ?>
