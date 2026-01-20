@@ -2,8 +2,10 @@
     // templates/navbar.php
     $current_script = basename($_SERVER['SCRIPT_NAME']);
     $current_page_param = $_GET['page'] ?? '';
+    $current_lang = $_GET['lang'] ?? 'en'; // Assuming 'en' is the default language
 ?>
 <header class="top-navbar">
+    <link rel="stylesheet" href="css/components/language_switcher.css">
     <div class="navbar-left">
         <a href="/" style="text-decoration: none; color: inherit;"><span class="logo">SCRM</span></a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] != 'registered'): ?>
@@ -11,10 +13,12 @@
         <?php endif; ?>
     </div>
     <div class="navbar-right">
-        <div class="language-switcher">
-            <a href="?lang=en" class="nav-button">EN</a>
-            <a href="?lang=fr" class="nav-button">FR</a>
-            <a href="?lang=zh-CN" class="nav-button">CN</a>
+        <div class="language-carousel-container">
+            <div class="language-carousel" id="languageCarousel">
+                <div class="language-item <?php echo ($current_lang == 'en' ? 'active' : ''); ?>" data-lang="en">EN</div>
+                <div class="language-item <?php echo ($current_lang == 'fr' ? 'active' : ''); ?>" data-lang="fr">FR</div>
+                <div class="language-item <?php echo ($current_lang == 'zh-CN' ? 'active' : ''); ?>" data-lang="zh-CN">CN</div>
+            </div>
         </div>
         <?php if (isset($_SESSION['user_id'])): ?>
             
@@ -67,4 +71,5 @@
 
         <?php endif; ?>
     </div>
+    <script src="js/components/language_switcher.js"></script>
 </header>

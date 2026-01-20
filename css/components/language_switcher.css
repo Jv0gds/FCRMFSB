@@ -1,0 +1,32 @@
+.language-carousel-container {
+    overflow: hidden;
+    width: 150px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.language-carousel {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.language-item {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.language-item.active {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.2); /* Emphasize the active item */
+    border-color: #007bff;
+}
