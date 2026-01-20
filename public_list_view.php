@@ -2,27 +2,61 @@
 include 'db.php';
 
 $search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+$sort = $_GET['sort'] ?? 'created_at_desc';
 
 // 设置分页参数
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $perPage = 10;
 $offset = ($page - 1) * $perPage;
 
+// 构建查询
+$params = [];
+$whereClauses = [];
+$baseSql = 'FROM leads';
+
+if (!empty($search)) {
+    $whereClauses[] = '(title LIKE :search1 OR company_name LIKE :search2 OR description LIKE :search3)';
+    $params[':search1'] = "%$search%";
+    $params[':search2'] = "%$search%";
+    $params[':search3'] = "%$search%";
+}
+
+if (!empty($status)) {
+    $whereClauses[] = 'status = :status';
+    $params[':status'] = $status;
+}
+
+$whereSql = '';
+if (!empty($whereClauses)) {
+    $whereSql = ' WHERE ' . implode(' AND ', $whereClauses);
+}
+
 // 获取总记录数
-$countStmt = $pdo->prepare('SELECT COUNT(*) FROM leads WHERE title LIKE :search1 OR company_name LIKE :search2 OR description LIKE :search3');
-$search_param = "%$search%";
-$countStmt->execute([':search1' => $search_param, ':search2' => $search_param, ':search3' => $search_param]);
+$countSql = 'SELECT COUNT(*) ' . $baseSql . $whereSql;
+$countStmt = $pdo->prepare($countSql);
+$countStmt->execute($params);
 $totalLeads = $countStmt->fetchColumn();
 $totalPages = ceil($totalLeads / $perPage);
 
-// Fetch description and created_at as well.
-$stmt = $pdo->prepare('SELECT id, first_name, last_name, company_name, title, description, source, status, created_at FROM leads WHERE title LIKE :search1 OR company_name LIKE :search2 OR description LIKE :search3 ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
+// 构建排序
+$orderBy = 'ORDER BY created_at DESC';
+if ($sort === 'created_at_asc') {
+    $orderBy = 'ORDER BY created_at ASC';
+} elseif ($sort === 'title_asc') {
+    $orderBy = 'ORDER BY title ASC';
+} elseif ($sort === 'title_desc') {
+    $orderBy = 'ORDER BY title DESC';
+}
+
+// 获取线索数据
+$leadsSql = 'SELECT id, first_name, last_name, company_name, title, description, source, status, created_at ' . $baseSql . $whereSql . ' ' . $orderBy . ' LIMIT :limit OFFSET :offset';
+$stmt = $pdo->prepare($leadsSql);
 $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$search_param = "%$search%";
-$stmt->bindValue(':search1', $search_param);
-$stmt->bindValue(':search2', $search_param);
-$stmt->bindValue(':search3', $search_param);
+foreach ($params as $key => &$val) {
+    $stmt->bindParam($key, $val);
+}
 $stmt->execute();
 $leads = $stmt->fetchAll();
 ?>
@@ -42,9 +76,25 @@ $leads = $stmt->fetchAll();
         </header>
 
         <div class="filter-bar">
-            <form action="public_list_view.php" method="get">
+            <form action="public_list_view.php" method="get" class="filter-form">
                 <input type="text" name="search" class="search-input" placeholder="搜索关键词..." value="<?= htmlspecialchars($search) ?>">
-                <button type="submit" class="btn">搜索</button>
+                
+                <select name="status" class="filter-select">
+                    <option value="">所有状态</option>
+                    <option value="new" <?= ($status == 'new') ? 'selected' : '' ?>>新线索</option>
+                    <option value="contacted" <?= ($status == 'contacted') ? 'selected' : '' ?>>已联系</option>
+                    <option value="qualified" <?= ($status == 'qualified') ? 'selected' : '' ?>>已合格</option>
+                    <option value="lost" <?= ($status == 'lost') ? 'selected' : '' ?>>丢失</option>
+                </select>
+
+                <select name="sort" class="filter-select">
+                    <option value="created_at_desc" <?= ($sort == 'created_at_desc') ? 'selected' : '' ?>>最新发布</option>
+                    <option value="created_at_asc" <?= ($sort == 'created_at_asc') ? 'selected' : '' ?>>最早发布</option>
+                    <option value="title_asc" <?= ($sort == 'title_asc') ? 'selected' : '' ?>>标题 (A-Z)</option>
+                    <option value="title_desc" <?= ($sort == 'title_desc') ? 'selected' : '' ?>>标题 (Z-A)</option>
+                </select>
+
+                <button type="submit" class="btn">筛选</button>
             </form>
         </div>
 
@@ -82,10 +132,10 @@ $leads = $stmt->fetchAll();
         </div>
         <div class="pagination">
             <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">上一页</a>
+                <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn">上一页</a>
             <?php endif; ?>
             <?php if ($page < $totalPages): ?>
-                <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">下一页</a>
+                <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&sort=<?= htmlspecialchars($sort) ?>" class="btn">下一页</a>
             <?php endif; ?>
         </div>
         <div class="back-link-container">

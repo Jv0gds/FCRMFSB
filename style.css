@@ -223,8 +223,28 @@ ul {
     margin-bottom: 2rem;
 }
 
-.filter-bar form {
+.filter-form {
     display: flex;
+    gap: 10px; /* Add space between form elements */
+    align-items: center;
+}
+
+.filter-select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--upwork-green);
+    box-shadow: 0 0 5px rgba(20, 168, 0, 0.5);
+}
+
+.filter-bar .btn {
+    border-radius: 20px; /* Apply border-radius to all buttons in filter bar */
 }
 
 .search-input {
