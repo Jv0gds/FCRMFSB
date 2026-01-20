@@ -1,6 +1,8 @@
 <?php
-session_start();
-include '../db.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
@@ -8,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $current_user_id = $_SESSION['user_id'];
-$other_user_id = $_GET['user_id'] ?? 0;
+$other_user_id = $_GET['receiver_id'] ?? 0;
 $lead_id = $_GET['lead_id'] ?? 0;
 
 if (empty($other_user_id) || empty($lead_id) || $current_user_id == $other_user_id) {

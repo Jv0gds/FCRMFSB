@@ -82,8 +82,8 @@ $comments = $stmt_comments->fetchAll();
             <aside class="sidebar-detail">
                 <div class="actions-box">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <?php if ($_SESSION['user_id'] != $lead['owner_id']): ?>
-                            <a href="index.php?page=start_conversation&lead_id=<?= $lead['id'] ?>&user_id=<?= $lead['owner_id'] ?>" class="btn btn-primary btn-block">发送私信</a>
+                        <?php if (isset($lead['owner_id']) && $_SESSION['user_id'] != $lead['owner_id']): ?>
+                            <a href="index.php?page=start_conversation&lead_id=<?= $lead['id'] ?>&receiver_id=<?= $lead['owner_id'] ?>" class="btn btn-primary btn-block">发送私信</a>
                         <?php endif; ?>
                         <button class="btn btn-primary btn-block">请求访问</button>
                     <?php else: ?>

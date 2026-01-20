@@ -1,6 +1,8 @@
 <?php
-session_start();
-include '../db.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(403);
