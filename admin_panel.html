@@ -1,0 +1,69 @@
+<main class="main-content">
+    <header class="top-bar">
+        <h2 class="page-title">系统管理</h2>
+    </header>
+
+    <div class="admin-grid">
+        <div class="card admin-card">
+            <div class="card-header">
+                <h3>用户管理</h3>
+                <button class="btn btn--sm btn--primary">添加用户</button>
+            </div>
+            <table class="data-table data-table--compact">
+                <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>张三</td>
+                        <td>销售代表</td>
+                        <td><span class="status-dot status-dot--active"></span> 正常</td>
+                        <td><a href="#">编辑</a></td>
+                    </tr>
+                    <tr>
+                        <td>李四</td>
+                        <td>管理员</td>
+                        <td><span class="status-dot status-dot--active"></span> 正常</td>
+                        <td><a href="#">编辑</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card admin-card">
+            <div class="card-header">
+                <h3>销售管道阶段设置</h3>
+            </div>
+            <form class="settings-form">
+                <ul class="sortable-list">
+                    <li class="sortable-item">
+                        <span>1. 初步沟通</span>
+                        <input type="color" value="#3498db">
+                    </li>
+                    <li class="sortable-item">
+                        <span>2. 需求分析</span>
+                        <input type="color" value="#e67e22">
+                    </li>
+                    <li class="sortable-item">
+                        <span>3. 方案/报价</span>
+                        <input type="color" value="#f1c40f">
+                    </li>
+                    <li class="sortable-item">
+                        <span>4. 谈判/复审</span>
+                        <input type="color" value="#9b59b6">
+                    </li>
+                    <li class="sortable-item">
+                        <span>5. 成交关闭</span>
+                        <input type="color" value="#2ecc71">
+                    </li>
+                </ul>
+                <button class="btn btn--sm btn--primary mt-2">保存更改</button>
+            </form>
+        </div>
+    </div>
+</main>

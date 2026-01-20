@@ -1,0 +1,59 @@
+<main class="main-content">
+    <header class="top-bar">
+        <h2 class="page-title">潜在客户列表</h2>
+        <div class="filter-bar">
+            <input type="text" class="search-input" placeholder="搜索姓名或公司...">
+            <select class="filter-select">
+                <option>所有阶段</option>
+                <option>未联系</option>
+                <option>跟进中</option>
+            </select>
+            <a href="form_view.html" class="btn btn--primary">新建线索</a>
+        </div>
+    </header>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>姓名</th>
+                    <th>公司</th>
+                    <th>职位</th>
+                    <th>阶段</th>
+                    <th>所有者</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><a href="detail_view.html" class="text-link">李雷</a></td>
+                    <td>ABC 科技有限公司</td>
+                    <td>采购经理</td>
+                    <td><span class="status-badge status-badge--new">新线索</span></td>
+                    <td>王销售</td>
+                    <td>
+                        <button class="icon-btn">编辑</button>
+                        <button class="icon-btn text-danger">删除</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><a href="detail_view.html" class="text-link">韩梅梅</a></td>
+                    <td>XYZ 贸易</td>
+                    <td>CEO</td>
+                    <td><span class="status-badge status-badge--contacted">已联系</span></td>
+                    <td>张经理</td>
+                    <td>...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button class="pagination__btn" disabled>上一页</button>
+        <span class="pagination__info">第 1 页 / 共 5 页</span>
+        <button class="pagination__btn">下一页</button>
+    </div>
+</main>

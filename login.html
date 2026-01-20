@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - SCRMFSB</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .auth-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d2129;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4e5969;
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e6eb;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            border-color: #1677ff;
+            outline: none;
+        }
+        .form-actions {
+            margin-top: 8px;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .btn--primary {
+            background-color: #1677ff;
+            color: #ffffff;
+            border-color: #1677ff;
+        }
+        .btn--primary:hover {
+            background-color: #4096ff;
+        }
+        .btn--outline {
+            background-color: #ffffff;
+            color: #4e5969;
+            border-color: #e5e6eb;
+        }
+        .btn--outline:hover {
+            background-color: #f7f8fa;
+            color: #1677ff;
+        }
+        .auth-divider {
+            margin: 24px 0;
+            text-align: center;
+            color: #c9cdd4;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .auth-divider span {
+            padding: 0 10px;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: #e5e6eb;
+        }
+        .form-footer-link {
+            margin-top: 16px;
+            text-align: center;
+        }
+        .auth-link {
+            color: #1677ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        .register-link {
+             margin-top: 24px;
+             text-align: center;
+             font-size: 14px;
+             color: #86909c;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">登录您的账户</h1>
+        </div>
+        <form class="auth-form auth-form--login" action="login_action.php" method="POST">
+            
+            <?php if (isset($_GET['error'])): ?>
+                <div style="color: red; margin-bottom: 10px; text-align: center;">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="form-group">
+                <label class="form-label" for="login-email">电子邮箱</label>
+                <input class="form-input" type="email" id="login-email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="login-password">密码</label>
+                <input class="form-input" type="password" id="login-password" name="password" required>
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" name="login_submit">进入系统</button>
+            </div>
+
+            <div class="auth-divider">
+                <span>或者</span>
+            </div>
+
+            <div class="form-actions">
+                <a href="guest_login.php" class="btn btn--outline">以访客身份试用</a>
+            </div>
+
+            <div class="form-footer-link">
+                <a href="#" class="auth-link">忘记密码?</a>
+            </div>
+        </form>
+        <div class="register-link">
+            还没有账户? <a href="register.html" class="auth-link">立即注册</a>
+        </div>
+    </div>
+</body>
+</html>
