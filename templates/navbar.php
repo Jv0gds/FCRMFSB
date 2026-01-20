@@ -22,7 +22,7 @@
                 <a href="pages/notifications.php" class="nav-button <?php echo ($current_script == 'notifications.php') ? 'active' : ''; ?>">通知</a>
                 <a href="index.php?page=messages" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'messages') ? 'active' : ''; ?>">信箱</a>
                 <a href="public_list_view.php" class="nav-button <?php echo ($current_script == 'public_list_view.php') ? 'active' : ''; ?>">公开目录</a>
-                <a href="index.php?page=support" class="nav-button <?php echo ($current_script == 'index.php' && $current_page_param == 'support') ? 'active' : ''; ?>">联系客服</a>
+                <a href="pages/contact_admin.php?recipient_id=1&subject=联系客服" class="nav-button <?php echo ($current_script == 'contact_admin.php') ? 'active' : ''; ?>">联系客服</a>
 
             <?php else: ?>
 

@@ -164,7 +164,7 @@ if ($latest_lead) {
                 </a>
                 <a href="index.php?page=profile_edit" class="action-card">
                     <div class="icon">👤</div>
-                    <div class="text">完善公司信息</div>
+                    <div class="text">完善个人信息</div>
                 </a>
             </div>
         </div>

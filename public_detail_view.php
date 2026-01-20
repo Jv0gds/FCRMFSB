@@ -128,7 +128,7 @@ $comments = $stmt_comments->fetchAll();
                     <?php else: ?>
                         <a href="login.html" class="btn btn-primary btn-block">登录以请求合作</a>
                     <?php endif; ?>
-                    <a href="mailto:report@example.com?subject=内容举报：线索 ID <?= $lead['id'] ?>" class="btn btn-secondary btn-block">举报内容</a>
+                    <a href="pages/contact_admin.php?recipient_id=1&subject=内容举报：线索 ID <?= $lead['id'] ?>" class="btn btn-secondary btn-block">举报内容</a>
                 </div>
                 <div class="info-box">
                     <h4>关于客户</h4>
