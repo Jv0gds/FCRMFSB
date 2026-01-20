@@ -66,7 +66,9 @@ CREATE TABLE leads (
     source VARCHAR(50), -- 来源：网站、介绍、广告
     status ENUM('new', 'contacted', 'qualified', 'lost') DEFAULT 'new',
     assigned_to INT, -- 分配给谁
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_by_user_id INT, -- 由哪个用户创建
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- 交易/商机表 (Deals - 包含管道阶段)
@@ -116,8 +118,11 @@ INSERT INTO contacts (first_name, last_name, email, company_id) VALUES
 ('梅梅', '韩', 'han@global.com', 2);
 
 -- 插入线索
-INSERT INTO leads (first_name, last_name, company_name, status, assigned_to) VALUES 
-('强', '光头', '森林伐木场', 'new', 3);
+INSERT INTO leads (first_name, last_name, email, phone, company_name, source, status, assigned_to) VALUES
+('杰', '周', 'jay@example.com', '13800138000', '音乐工作室', '网站', 'new', 3),
+('敏', '王', 'wangmin@example.com', '13912345678', '设计公司', '广告', 'contacted', 3),
+('磊', '张', 'zhanglei@example.com', '13787654321', '科技创业公司', '介绍', 'qualified', 3),
+('芳', '李', 'lifang@example.com', '13698765432', '餐饮集团', '网站', 'lost', 3);
 
 -- 插入交易
 INSERT INTO deals (title, value, stage, company_id, assigned_to) VALUES 

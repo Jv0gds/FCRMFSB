@@ -26,7 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
         $_SESSION['role'] = $user['role']; // 保存角色用于权限控制
 
         // 根据角色跳转到不同页面 (可选)
-        header("Location: index.php");
+        if (isset($_SESSION['role']) && $_SESSION['role'] == 'registered') {
+            header("Location: index.php?page=client_dashboard");
+        } else {
+            header("Location: index.php?page=dashboard");
+        }
         exit();
     } else {
         // 登录失败

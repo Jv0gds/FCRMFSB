@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. 插入新用户数据
         // 准备插入数据的 SQL 语句
-        $stmt_insert = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+        $stmt_insert = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, 'registered')");
 
         // 执行插入操作，并绑定参数
         if ($stmt_insert->execute([

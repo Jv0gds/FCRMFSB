@@ -7,6 +7,8 @@
     --text-color: #24292e;
     --text-color-light: #ffffff;
     --accent-color: #0366d6;
+    --upwork-green: #14a800;
+    --upwork-green-hover: #108a00;
 }
 
 * {
@@ -42,6 +44,13 @@ ul {
     height: 100vh;
 }
 
+.app-shell.no-sidebar {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "top-nav"
+        "main";
+}
+
 /* Top Navbar */
 .top-navbar {
     grid-area: top-nav;
@@ -52,11 +61,16 @@ ul {
     justify-content: space-between;
     padding: 0 20px;
     border-bottom: 1px solid #444;
+    
+    /* --- 添加这两行 --- */
+    position: relative; /* 必须设置定位，z-index 才会生效 */
+    z-index: 1000;      /* 设置一个很高的数值，确保它永远在最上面 */
+    /* ---------------- */
 }
 
 .navbar-left, .navbar-right {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 16px;
 }
 
@@ -90,7 +104,8 @@ ul {
 /* Dropdown styles */
 .dropdown {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
 }
 
 .dropdown-content {
@@ -99,7 +114,7 @@ ul {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 1001;
     right: 0;
     border-radius: 6px;
     overflow: hidden;
@@ -160,6 +175,8 @@ ul {
     border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
 }
 
 .nav-button:hover {
@@ -174,4 +191,319 @@ ul {
     gap: 8px;
     cursor: pointer;
     color: var(--text-color-light);
+}
+
+/* Upwork Style for Public List View */
+.public-list-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+}
+
+.list-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.list-header h1 {
+    font-size: 2.5rem;
+    color: #14a800;
+}
+
+.list-header p {
+    font-size: 1.1rem;
+    color: #5e6d55;
+}
+
+.filter-bar {
+    margin-bottom: 2rem;
+}
+
+.filter-bar form {
+    display: flex;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
+    font-size: 1rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--upwork-green);
+    box-shadow: 0 0 5px rgba(20, 168, 0, 0.5);
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background-color: var(--upwork-green);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    display: inline-block;
+}
+
+.filter-bar .btn {
+    border-radius: 0 20px 20px 0;
+}
+
+.btn:hover {
+    background-color: var(--upwork-green-hover);
+}
+
+.lead-list {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.lead-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.lead-card {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.lead-card:last-child {
+    border-bottom: none;
+}
+
+.lead-card-link:hover .lead-card {
+    background-color: #f6f8fa;
+}
+
+.lead-title {
+    color: var(--upwork-green);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.lead-description-snippet {
+    font-size: 0.9rem;
+    color: #6a737d; /* Grey color */
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.lead-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #586069;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 0.25em 0.6em;
+    border-radius: 2em;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge--new {
+    background-color: #dafbe1;
+    color: #0d6f29;
+}
+
+.back-link-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn-secondary {
+    background-color: #6a737d;
+}
+
+.btn-secondary:hover {
+    background-color: #586069;
+}
+
+/* Public Detail View Styles */
+.public-detail-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.detail-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-header h1 {
+    font-size: 2.2rem;
+    color: #333;
+}
+
+.detail-header h2 {
+    font-size: 1.5rem;
+    color: var(--upwork-green);
+    font-weight: 500;
+}
+
+.detail-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+}
+
+.main-content-detail h3 {
+    font-size: 1.4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.lead-description {
+    line-height: 1.8;
+    color: #333;
+}
+
+.sidebar-detail .actions-box, .sidebar-detail .info-box {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--upwork-green);
+}
+.btn-primary:hover {
+    background-color: var(--upwork-green-hover);
+}
+
+.info-box h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.info-box dl {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0.8rem;
+}
+
+.info-box dt {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-box dd {
+    color: #333;
+}
+
+/* Comments Section */
+.comments-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-section h3 {
+    margin-bottom: 1rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    min-height: 80px;
+}
+
+.comment-form .btn {
+    float: right;
+}
+
+.comments-list {
+    margin-top: 2rem;
+    clear: both;
+}
+
+.comment {
+    background-color: #f6f8fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.comment-body {
+    margin-bottom: 0.5rem;
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    color: #586069;
+}
+
+.comment-meta span {
+    margin-right: 1rem;
+}
+
+/* =========================================================
+   新布局方案：按钮左移 (偏左对齐)，头像保留在右侧
+   ========================================================= */
+
+/* 1. 修改顶级容器：取消两端对齐，改为从左排列 */
+.top-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important; /* 关键：强制从左开始排 */
+    gap: 40px; /* Logo区域和按钮组之间的间距，可调整 */
+    
+    /* 保持层级安全 */
+    position: relative;
+    z-index: 9999;
+}
+
+/* 2. 左侧 Logo 区域保持原样 */
+.navbar-left {
+    flex-shrink: 0; /* 防止被挤压 */
+}
+
+/* 3. 右侧容器逻辑重构：占据剩余空间，但让按钮靠左 */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* 让它占满中间所有空位 */
+    justify-content: flex-start; /* 让里面的按钮靠左排 */
+    gap: 15px; /* 按钮之间的间距 */
+}
+
+/* 4. 【关键】把最后的“个人头像”推到最右边 */
+/* 这里的 :last-child 选中了你的头像下拉菜单 */
+.navbar-right > .dropdown:last-child,
+.navbar-right > .user-profile:last-child {
+    margin-left: auto !important; /* 自动吸附到最右侧 */
+}
+
+/* 5. 确保按钮样式正常 */
+.nav-button {
+    white-space: nowrap; /* 防止按钮文字换行 */
 }

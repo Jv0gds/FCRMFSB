@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-shell">
+    <div class="app-shell <?php echo (isset($_SESSION["role"]) && $_SESSION["role"] === "registered") ? "no-sidebar" : ""; ?>">
         <?php include 'templates/navbar.php'; ?>
 
+        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] !== "registered"): ?>
         <aside class="sidebar">
             <nav>
                 <ul>
@@ -27,37 +28,43 @@
                 </ul>
             </nav>
         </aside>
+        <?php endif; ?>
 
         <main class="main-content">
             <?php
-            // 定义一个允许页面访问的白名单，以增强安全性
-            $allowed_pages = [
-                'dashboard', 'leads_list', 'contacts_list', 'companies_list',
-                'deals_list', 'activities_list', 'notifications', 'admin_panel',
-                'lead_create', 'lead_detail', 'lead_edit',
-                'contact_create', 'contact_detail', 'contact_edit',
-                'company_create', 'company_detail', 'company_edit'
-            ];
-
-            // 获取请求的页面，如果没有指定，则默认为'dashboard'
-            $page = $_GET['page'] ?? 'dashboard';
-
-            // 检查请求的页面是否在白名单中
-            if (in_array($page, $allowed_pages)) {
-                $file_path = "pages/{$page}.php";
-
-                // 检查对应的文件是否存在
-                if (file_exists($file_path)) {
-                    include $file_path;
+            // 检查用户是否已登录
+            if (isset($_SESSION["user_id"])) {
+                // 根据用户角色决定显示内容
+                if ($_SESSION["role"] === "registered") {
+                    // 注册用户看到客户端仪表盘
+                    $allowed_pages = ['client_dashboard', 'lead_create_form', 'profile_edit', 'messages', 'conversation', 'send_message', 'start_conversation', 'company_profile', 'my_applications', 'support'];
+                    $page = $_GET['page'] ?? 'client_dashboard';
+                     if (in_array($page, $allowed_pages) && file_exists("pages/{$page}.php")) {
+                        include "pages/{$page}.php";
+                    } else {
+                        include "pages/client_dashboard.php";
+                    }
                 } else {
-                    // 文件不存在，显示一个错误页面（或包含一个通用的404页面）
-                    echo "<h2>错误 404 - 页面未找到</h2>";
-                    echo "<p>我们找不到 '{$page}' 对应的页面文件。</p>";
+                    // 其他员工角色看到CRM仪表盘
+                    $allowed_pages = [
+                        'dashboard', 'leads_list', 'contacts_list', 'companies_list',
+                        'deals_list', 'activities_list', 'notifications', 'admin_panel',
+                        'lead_create', 'lead_detail', 'lead_edit',
+                        'contact_create', 'contact_detail', 'contact_edit',
+                        'company_create', 'company_detail', 'company_edit',
+                        'messages', 'conversation', 'send_message', 'start_conversation',
+                        'support'
+                    ];
+                    $page = $_GET['page'] ?? 'dashboard';
+                    if (in_array($page, $allowed_pages) && file_exists("pages/{$page}.php")) {
+                        include "pages/{$page}.php";
+                    } else {
+                        include "pages/dashboard.php"; // 默认页面
+                    }
                 }
             } else {
-                // 如果页面不在白名单中，为了安全起见，也显示403错误
-                echo "<h2>错误 403 - 禁止访问</h2>";
-                echo "<p>您无权访问此页面。</p>";
+                // 用户未登录，显示公开内容
+                include 'public_page.php';
             }
             ?>
         </main>
