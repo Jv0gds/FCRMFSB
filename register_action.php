@@ -10,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+   $first_name = $_POST['first_name'];
+   $last_name = $_POST['last_name'];
 
     // 1. 验证密码
     if ($password !== $confirm_password) {
@@ -41,13 +43,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. 插入新用户数据
         // 准备插入数据的 SQL 语句
-        $stmt_insert = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, 'registered')");
+        $stmt_insert = $pdo->prepare("INSERT INTO users (username, email, password, role, first_name, last_name) VALUES (:username, :email, :password, 'registered', :first_name, :last_name)");
 
         // 执行插入操作，并绑定参数
         if ($stmt_insert->execute([
             'username' => $username,
             'email' => $email,
-            'password' => $hashed_password
+            'password' => $hashed_password,
+           'first_name' => $first_name,
+           'last_name' => $last_name
         ])) {
             // 4. 注册成功，显示成功信息并倒计时跳转
             echo <<<HTML

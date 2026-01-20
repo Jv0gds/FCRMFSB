@@ -58,6 +58,8 @@ $leads = $stmt->fetchAll();
                     <a href="public_detail_view.php?id=<?= $lead['id'] ?>" class="lead-card-link">
                         <div class="lead-card">
                             <h2 class="lead-title"><?= htmlspecialchars($lead['title'] ?? '') ?></h2>
+                            <p class="lead-name" style="font-weight: bold;"><?= htmlspecialchars($lead['first_name'] ?? '') ?> <?= htmlspecialchars($lead['last_name'] ?? '') ?></p>
+                            <p class="lead-company"><?= htmlspecialchars($lead['company_name'] ?? '') ?></p>
                             <p class="lead-description-snippet">
                                 <?php
                                 $description = $lead['description'] ?? '';
