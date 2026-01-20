@@ -185,9 +185,7 @@ function t($key) {
                 <span><?php echo t('or'); ?></span>
             </div>
 
-            <div class="form-actions">
-                <a href="guest_login.php" class="btn btn--outline"><?php echo t('try_as_guest'); ?></a>
-            </div>
+            
 
             <div class="form-footer-link">
                 <a href="#" class="auth-link"><?php echo t('forgot_password'); ?></a>
